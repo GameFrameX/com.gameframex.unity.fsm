@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.1](https://github.com/GameFrameX/com.gameframex.unity.fsm/tree/1.0.1) (2025-06-01)
+
+[Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.fsm/compare/1.0.0...1.0.1)
+
 ## [1.0.0](https://github.com/GameFrameX/com.gameframex.unity.fsm/tree/1.0.0) (2025-05-31)
 
 [Full Changelog](https://github.com/GameFrameX/com.gameframex.unity.fsm/compare/aa617d728011cb046188d8534a423649c947721e...1.0.0)
