@@ -50,6 +50,16 @@ namespace GameFrameX.Fsm.Runtime
         }
 
         /// <summary>
+        /// 有限状态机状态固定轮询时调用。
+        /// </summary>
+        /// <param name="fsm">有限状态机引用。</param>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        protected internal virtual void OnFixedUpdate(IFsm<T> fsm, float elapseSeconds, float realElapseSeconds)
+        {
+        }
+
+        /// <summary>
         /// 有限状态机状态离开时调用。
         /// </summary>
         /// <param name="fsm">有限状态机引用。</param>
@@ -73,7 +83,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="fsm">有限状态机引用。</param>
         public void ChangeToState<TState>(IFsm<T> fsm) where TState : FsmState<T>
         {
-            Fsm<T> fsmImplement = (Fsm<T>) fsm;
+            Fsm<T> fsmImplement = (Fsm<T>)fsm;
             if (fsmImplement == null)
             {
                 throw new GameFrameworkException("FSM is invalid.");
@@ -89,7 +99,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="fsm">有限状态机引用。</param>
         protected void ChangeState<TState>(IFsm<T> fsm) where TState : FsmState<T>
         {
-            Fsm<T> fsmImplement = (Fsm<T>) fsm;
+            Fsm<T> fsmImplement = (Fsm<T>)fsm;
             if (fsmImplement == null)
             {
                 throw new GameFrameworkException("FSM is invalid.");
@@ -105,7 +115,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="stateType">要切换到的有限状态机状态类型。</param>
         protected void ChangeState(IFsm<T> fsm, Type stateType)
         {
-            Fsm<T> fsmImplement = (Fsm<T>) fsm;
+            Fsm<T> fsmImplement = (Fsm<T>)fsm;
             if (fsmImplement == null)
             {
                 throw new GameFrameworkException("FSM is invalid.");

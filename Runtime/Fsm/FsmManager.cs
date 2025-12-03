@@ -19,6 +19,7 @@ namespace GameFrameX.Fsm.Runtime
     {
         private readonly Dictionary<TypeNamePair, FsmBase> m_Fsms;
         private readonly List<FsmBase> m_TempFsms;
+        private readonly List<FsmBase> m_TempFixedFsms;
 
         /// <summary>
         /// 初始化有限状态机管理器的新实例。
@@ -26,7 +27,8 @@ namespace GameFrameX.Fsm.Runtime
         public FsmManager()
         {
             m_Fsms = new Dictionary<TypeNamePair, FsmBase>();
-            m_TempFsms = new List<FsmBase>();
+            m_TempFsms = new List<FsmBase>(16);
+            m_TempFixedFsms = new List<FsmBase>(16);
         }
 
         /// <summary>
@@ -72,6 +74,35 @@ namespace GameFrameX.Fsm.Runtime
                 }
 
                 fsm.Update(elapseSeconds, realElapseSeconds);
+            }
+        }
+
+        /// <summary>
+        /// 有限状态机管理器固定轮询。
+        /// </summary>
+        /// <param name="fixedDeltaTime">固定逻辑流逝时间，以秒为单位。</param>
+        /// <param name="fixedTime">固定时间，以秒为单位。</param>
+        public void FixedUpdate(float fixedDeltaTime, float fixedTime)
+        {
+            m_TempFixedFsms.Clear();
+            if (m_Fsms.Count <= 0)
+            {
+                return;
+            }
+
+            foreach (var fsm in m_Fsms)
+            {
+                m_TempFixedFsms.Add(fsm.Value);
+            }
+
+            foreach (var fsm in m_TempFixedFsms)
+            {
+                if (fsm.IsDestroyed)
+                {
+                    continue;
+                }
+
+                fsm.FixedUpdate(fixedDeltaTime, fixedTime);
             }
         }
 
@@ -375,6 +406,7 @@ namespace GameFrameX.Fsm.Runtime
 
             return InternalDestroyFsm(new TypeNamePair(fsm.OwnerType, fsm.Name));
         }
+
 
         private bool InternalHasFsm(TypeNamePair typeNamePair)
         {

@@ -42,10 +42,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public T Owner
         {
-            get
-            {
-                return m_Owner;
-            }
+            get { return m_Owner; }
         }
 
         /// <summary>
@@ -53,10 +50,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override Type OwnerType
         {
-            get
-            {
-                return typeof(T);
-            }
+            get { return typeof(T); }
         }
 
         /// <summary>
@@ -64,10 +58,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override int FsmStateCount
         {
-            get
-            {
-                return m_States.Count;
-            }
+            get { return m_States.Count; }
         }
 
         /// <summary>
@@ -75,10 +66,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override bool IsRunning
         {
-            get
-            {
-                return m_CurrentState != null;
-            }
+            get { return m_CurrentState != null; }
         }
 
         /// <summary>
@@ -86,10 +74,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override bool IsDestroyed
         {
-            get
-            {
-                return m_IsDestroyed;
-            }
+            get { return m_IsDestroyed; }
         }
 
         /// <summary>
@@ -97,10 +82,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public FsmState<T> CurrentState
         {
-            get
-            {
-                return m_CurrentState;
-            }
+            get { return m_CurrentState; }
         }
 
         /// <summary>
@@ -108,10 +90,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override string CurrentStateName
         {
-            get
-            {
-                return m_CurrentState != null ? m_CurrentState.GetType().FullName : null;
-            }
+            get { return m_CurrentState != null ? m_CurrentState.GetType().FullName : null; }
         }
 
         /// <summary>
@@ -119,10 +98,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         public override float CurrentStateTime
         {
-            get
-            {
-                return m_CurrentStateTime;
-            }
+            get { return m_CurrentStateTime; }
         }
 
         /// <summary>
@@ -544,6 +520,16 @@ namespace GameFrameX.Fsm.Runtime
 
             m_CurrentStateTime += elapseSeconds;
             m_CurrentState.OnUpdate(this, elapseSeconds, realElapseSeconds);
+        }
+
+        internal override void FixedUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            if (m_CurrentState == null)
+            {
+                return;
+            }
+
+            m_CurrentState.OnFixedUpdate(this, elapseSeconds, realElapseSeconds);
         }
 
         /// <summary>

@@ -18,10 +18,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机数量。
         /// </summary>
-        int Count
-        {
-            get;
-        }
+        int Count { get; }
 
         /// <summary>
         /// 检查是否存在有限状态机。
@@ -177,5 +174,12 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="fsm">要销毁的有限状态机。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
         bool DestroyFsm(FsmBase fsm);
+
+        /// <summary>
+        /// 轮询所有有限状态机。
+        /// </summary>
+        /// <param name="fixedDeltaTime">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="fixedTime">真实流逝时间，以秒为单位。</param>
+        void FixedUpdate(float fixedDeltaTime, float fixedTime);
     }
 }

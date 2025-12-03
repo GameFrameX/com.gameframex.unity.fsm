@@ -47,6 +47,11 @@ namespace GameFrameX.Fsm.Runtime
             }
         }
 
+        private void FixedUpdate()
+        {
+            m_FsmManager.FixedUpdate(Time.fixedDeltaTime, Time.fixedTime);
+        }
+
         /// <summary>
         /// 检查是否存在有限状态机。
         /// </summary>
