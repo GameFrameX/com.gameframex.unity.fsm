@@ -1,44 +1,56 @@
-﻿## HOMEPAGE
-GameFrameX 的 Fsm 有限状态机组件
+<div align="center">
 
- **Fsm 有限状态机组件 (Fsm Component)** - 提供状态机组件相关的接口。
+<img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160"/>
 
+# Game Frame X FSM Component
 
-# 使用文档(文档编写于GPT4)
-# 有限状态机组件 `FsmComponent` 说明文档
+[![License](https://img.shields.io/github/license/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/v/release/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/releases)
+[![Documentation](https://img.shields.io/badge/Documentation-Documentation-blue)](https://gameframex.doc.alianblank.com)
 
-## 简介
-`FsmComponent` 是一个集成于Game Framework游戏框架的有限状态机组件，用于管理和控制有限状态机（FSM）的创建、获取、检查以及销毁。
+All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams
 
-## 功能
-- `Count` 属性：获取当前状态机的数量。
-- `HasFsm` 方法：检查指定类型的状态机是否已经存在。
-- `GetFsm` 方法：根据指定类型获取状态机实例。
-- `GetAllFsmList` 方法：获取所有状态机实例。
-- `CreateFsm` 方法：创建新的状态机实例。
-- `DestroyFsm` 方法：销毁指定的状态机实例。
+[Documentation](https://gameframex.doc.alianblank.com) · [Quick Start](#quick-start) · [QQ Group](https://qm.qq.com/q/5kbDVBdUeS) · **Language**
 
-## 使用方法
+[English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
-### 初始化组件
-在游戏开始时，`Awake` 方法会被自动调用。
+</div>
 
-```csharp
-protected override void Awake()
-{
-    base.Awake();
-    new FsmManager();
-    m_FsmManager = GameFrameworkEntry.GetModule<IFsmManager>();
-    if (m_FsmManager == null)
-    {
-        Log.Fatal("FSM manager is invalid.");
-        return;
-    }
-}
-```
+---
 
-### 创建状态机
-使用 `CreateFsm` 方法创建一个新的有限状态机。需要提供拥有者对象、状态机名称（可选）和状态集合。
+## Project Overview
+
+The **FSM (Finite State Machine) Component** provides interfaces for managing and controlling the creation, retrieval, inspection, and destruction of finite state machines.
+
+### Features
+
+- `Count` property: Get the current number of state machines.
+- `HasFsm` method: Check if a state machine of the specified type already exists.
+- `GetFsm` method: Get a state machine instance by specified type.
+- `GetAllFsmList` method: Get all state machine instances.
+- `CreateFsm` method: Create a new state machine instance.
+- `DestroyFsm` method: Destroy a specified state machine instance.
+
+## Quick Start
+
+### Installation
+
+Choose one of the following methods:
+
+1. Add to `manifest.json` dependencies:
+   ```json
+   {
+      "com.gameframex.unity.fsm": "https://github.com/AlianBlank/com.gameframex.unity.fsm.git"
+   }
+   ```
+2. Use **Packages Manager** in Unity with **Git URL**: `https://github.com/AlianBlank/com.gameframex.unity.fsm.git`
+3. Clone the repository into your Unity project's `Packages` directory. It will be loaded automatically.
+
+## Usage Examples
+
+### Creating a State Machine
+
+Use `CreateFsm` to create a new finite state machine. You need to provide an owner object, an optional name, and a collection of states.
 
 ```csharp
 public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : class
@@ -47,8 +59,9 @@ public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : clas
 }
 ```
 
-### 获取状态机
-根据拥有者类型或名称来获取对应的有限状态机。
+### Getting a State Machine
+
+Retrieve a finite state machine by owner type or name.
 
 ```csharp
 public IFsm<T> GetFsm<T>() where T : class
@@ -57,8 +70,9 @@ public IFsm<T> GetFsm<T>() where T : class
 }
 ```
 
-### 检查状态机存在
-调用 `HasFsm` 方法确认是否已创建特定的有限状态机。
+### Checking State Machine Existence
+
+Call `HasFsm` to confirm whether a specific finite state machine has been created.
 
 ```csharp
 public bool HasFsm<T>() where T : class
@@ -67,8 +81,9 @@ public bool HasFsm<T>() where T : class
 }
 ```
 
-### 销毁状态机
-使用 `DestroyFsm` 方法销毁不再需要的状态机，回收资源。
+### Destroying a State Machine
+
+Use `DestroyFsm` to destroy a state machine that is no longer needed, reclaiming resources.
 
 ```csharp
 public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
@@ -77,17 +92,20 @@ public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
 }
 ```
 
-## 注意事项
-确保在调用任何状态机管理方法之前，状态机管理器 `m_FsmManager` 已被正确初始化，否则可能会引发错误。
+> **Note:** Ensure the FSM manager `m_FsmManager` is properly initialized before calling any state machine management methods. This component interacts with other framework modules, so ensure the game framework is correctly set up and initialized.
 
-此组件需要与游戏框架的其他模块和组件进行交互使用，需保证游戏框架已被正确设置并初始化。
+## Documentation & Resources
 
-# 使用方式(任选其一)
+- [Documentation](https://gameframex.doc.alianblank.com)
 
-1. 直接在 `manifest.json` 的文件中的 `dependencies` 节点下添加以下内容
-   ```json
-      {"com.gameframex.unity.fsm": "https://github.com/AlianBlank/com.gameframex.unity.fsm.git"}
-    ```
-2. 在Unity 的`Packages Manager` 中使用`Git URL` 的方式添加库,地址为：https://github.com/AlianBlank/com.gameframex.unity.fsm.git
+## Community & Support
 
-3. 直接下载仓库放置到Unity 项目的`Packages` 目录下。会自动加载识别
+- [QQ Group](https://qm.qq.com/q/5kbDVBdUeS)
+
+## Changelog
+
+See [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases) for changelog.
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE).
