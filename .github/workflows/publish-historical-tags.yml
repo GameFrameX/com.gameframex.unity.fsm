@@ -41,6 +41,8 @@ jobs:
             npm pkg fix
             npm publish
 
+            git checkout -- .
+
             echo "=== Published $tag ==="
             echo
           done
