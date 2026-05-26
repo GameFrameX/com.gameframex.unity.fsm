@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.2...1.0.3) (2026-05-26)
+
+
+### Bug Fixes
+
+* **ci:** 修复历史 tag 发布循环中 package.json 冲突 ([57083d8](https://github.com/gameframex/com.gameframex.unity.fsm/commit/57083d89ceb6efda97572a6ff5228719a4a82789))
+
 # Changelog
 
 ## [1.0.1](https://github.com/GameFrameX/com.gameframex.unity.fsm/tree/1.0.1) (2025-06-01)

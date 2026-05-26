@@ -3,14 +3,14 @@
   "displayName": "Game Frame X FSM",
   "category": "Game Framework X",
   "description": "Game Frame X FSM Component",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "unity": "2019.4",
   "keywords": [
     "Game Framework X"
   ],
   "repository": {
     "name": "com.gameframex.unity.fsm",
-    "url": "https://github.com/gameframex/com.gameframex.unity.fsm.git",
+    "url": "git+https://github.com/gameframex/com.gameframex.unity.fsm.git",
     "type": "git"
   },
   "author": {
