@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.3...1.0.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* **ci:** 统一 .github 工作流配置 ([84d5672](https://github.com/gameframex/com.gameframex.unity.fsm/commit/84d567208d7ecf9e86c39f06c344c9c9379242fc))
+
 ## [1.0.3](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.2...1.0.3) (2026-05-26)
 
 
