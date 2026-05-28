@@ -2,7 +2,7 @@
   "name": "com.gameframex.unity.fsm",
   "displayName": "Game Frame X FSM",
   "category": "GameFrameX",
-  "description": "Game Frame X FSM Component",
+  "description": "GameFrameX FSM — Unity generic finite state machine package. Manages creation, lifecycle, and state transitions of typed state machines with per-FSM data dictionaries (Variable). Supports named states, generic data storage across states, FixedUpdate polling, and both generic and named FSM overloads. Docs: https://gameframex.doc.alianblank.com\n\nGameFrameX FSM — Unity 泛型有限状态机功能包。管理类型化状态机的创建、生命周期和状态转换，支持每个 FSM 的数据字典（Variable）。支持命名状态、跨状态泛型数据存储、FixedUpdate 轮询，以及泛型和命名 FSM 重载。文档：https://gameframex.doc.alianblank.com",
   "version": "1.0.3",
   "unity": "2019.4",
   "keywords": [
