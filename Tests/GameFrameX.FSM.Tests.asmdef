@@ -1,7 +1,8 @@
 {
     "name": "GameFrameX.FSM.Tests",
     "references": [
-        "GameFrameX.FSM.Runtime"
+        "GameFrameX.FSM.Runtime",
+        "GameFrameX.Runtime"
     ],
     "rootNamespace": "GameFrameX.FSM.Tests",
     "includePlatforms": [
