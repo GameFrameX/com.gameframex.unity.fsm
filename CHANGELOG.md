@@ -1,3 +1,26 @@
+# [1.1.0](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.4...1.1.0) (2026-05-30)
+
+
+### Bug Fixes
+
+* **fsm:** Fsm.Create 添加防御性 m_States.Clear 及 GetAllStates 使用 CopyTo ([63ffe88](https://github.com/gameframex/com.gameframex.unity.fsm/commit/63ffe880416b1b83f09bbac24efaa2ba42a44f4f))
+* **fsm:** FsmComponent 添加 FixedUpdate 空引用保护及统一 AddComponentMenu 路径 ([181be30](https://github.com/gameframex/com.gameframex.unity.fsm/commit/181be3027b9289e14321551434c36fb1ab608d53))
+* **test:** 修复单元测试编译错误 ([10497b7](https://github.com/gameframex/com.gameframex.unity.fsm/commit/10497b77d0f8ae88dd6307c6286c1980ca9a9f92))
+* **test:** 替换无效单元测试为 FSM 功能测试 ([39e10dd](https://github.com/gameframex/com.gameframex.unity.fsm/commit/39e10dd18f1428fdc93160ef05b123f1b772fd1d))
+* **test:** 补充 GameFrameX.Runtime 程序集引用 ([511401c](https://github.com/gameframex/com.gameframex.unity.fsm/commit/511401ced078121e192557db3ee3bde29bd24c26))
+
+
+### Features
+
+* **fsm:** 增加 Reset / AddState / RemoveState 运行时状态管理 ([03b10e8](https://github.com/gameframex/com.gameframex.unity.fsm/commit/03b10e80dbd01ef9f5308db9dfa8a23ef2e1096f))
+
+
+### Performance Improvements
+
+* **fsm:** FsmManager 临时列表初始容量从 16 增大到 64 ([77e5e75](https://github.com/gameframex/com.gameframex.unity.fsm/commit/77e5e75405001aa50d3832d76f6bb4189d0e7378))
+* **fsm:** 为公开类和成员添加 [Preserve] 防裁剪 ([d4c88a2](https://github.com/gameframex/com.gameframex.unity.fsm/commit/d4c88a2d5cde3a552e93f1b2e6077138ddb87dc9))
+* **fsm:** 构造函数为 m_States 指定初始容量 8 ([e1d1744](https://github.com/gameframex/com.gameframex.unity.fsm/commit/e1d17444e93718edacb16572afa1a65e9e11166a))
+
 ## [1.0.4](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.3...1.0.4) (2026-05-28)
 
 
