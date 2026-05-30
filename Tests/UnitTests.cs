@@ -1,4 +1,5 @@
 using GameFrameX.Fsm.Runtime;
+using GameFrameX.Runtime;
 using NUnit.Framework;
 
 namespace GameFrameX.FSM.Tests
@@ -16,11 +17,7 @@ namespace GameFrameX.FSM.Tests
         [TearDown]
         public void Teardown()
         {
-            if (m_FsmManager != null)
-            {
-                m_FsmManager.Shutdown();
-                m_FsmManager = null;
-            }
+            m_FsmManager = null;
         }
 
         [Test]
@@ -40,7 +37,7 @@ namespace GameFrameX.FSM.Tests
             IFsm<object> fsm = m_FsmManager.CreateFsm(owner, new TestIdleState());
             fsm.Start<TestIdleState>();
             Assert.IsTrue(fsm.IsRunning);
-            Assert.AreEqual(nameof(TestIdleState), fsm.CurrentStateName);
+            Assert.AreEqual(nameof(TestIdleState), fsm.CurrentState.GetType().Name);
 
             bool destroyed = m_FsmManager.DestroyFsm<object>();
             Assert.IsTrue(destroyed);
