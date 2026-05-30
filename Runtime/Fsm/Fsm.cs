@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using GameFrameX.Runtime;
+using UnityEngine.Scripting;
 
 namespace GameFrameX.Fsm.Runtime
 {
@@ -15,6 +16,7 @@ namespace GameFrameX.Fsm.Runtime
     /// 有限状态机。
     /// </summary>
     /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+    [Preserve]
     internal sealed class Fsm<T> : FsmBase, IReference, IFsm<T> where T : class
     {
         private T m_Owner;
@@ -27,6 +29,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 初始化有限状态机的新实例。
         /// </summary>
+        [Preserve]
         public Fsm()
         {
             m_Owner = null;
@@ -40,6 +43,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机持有者。
         /// </summary>
+        [Preserve]
         public T Owner
         {
             get { return m_Owner; }
@@ -48,6 +52,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机持有者类型。
         /// </summary>
+        [Preserve]
         public override Type OwnerType
         {
             get { return typeof(T); }
@@ -56,6 +61,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机中状态的数量。
         /// </summary>
+        [Preserve]
         public override int FsmStateCount
         {
             get { return m_States.Count; }
@@ -64,6 +70,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机是否正在运行。
         /// </summary>
+        [Preserve]
         public override bool IsRunning
         {
             get { return m_CurrentState != null; }
@@ -72,6 +79,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机是否被销毁。
         /// </summary>
+        [Preserve]
         public override bool IsDestroyed
         {
             get { return m_IsDestroyed; }
@@ -80,6 +88,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取当前有限状态机状态。
         /// </summary>
+        [Preserve]
         public FsmState<T> CurrentState
         {
             get { return m_CurrentState; }
@@ -88,6 +97,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取当前有限状态机状态名称。
         /// </summary>
+        [Preserve]
         public override string CurrentStateName
         {
             get { return m_CurrentState != null ? m_CurrentState.GetType().FullName : null; }
@@ -96,6 +106,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取当前有限状态机状态持续时间。
         /// </summary>
+        [Preserve]
         public override float CurrentStateTime
         {
             get { return m_CurrentStateTime; }
@@ -108,6 +119,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>创建的有限状态机。</returns>
+        [Preserve]
         public static Fsm<T> Create(string name, T owner, params FsmState<T>[] states)
         {
             if (owner == null)
@@ -152,6 +164,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>创建的有限状态机。</returns>
+        [Preserve]
         public static Fsm<T> Create(string name, T owner, List<FsmState<T>> states)
         {
             if (owner == null)
@@ -192,6 +205,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 清理有限状态机。
         /// </summary>
+        [Preserve]
         public void Clear()
         {
             if (m_CurrentState != null)
@@ -232,6 +246,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 开始有限状态机。
         /// </summary>
         /// <typeparam name="TState">要开始的有限状态机状态类型。</typeparam>
+        [Preserve]
         public void Start<TState>() where TState : FsmState<T>
         {
             if (IsRunning)
@@ -254,6 +269,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 开始有限状态机。
         /// </summary>
         /// <param name="stateType">要开始的有限状态机状态类型。</param>
+        [Preserve]
         public void Start(Type stateType)
         {
             if (IsRunning)
@@ -287,6 +303,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="TState">要检查的有限状态机状态类型。</typeparam>
         /// <returns>是否存在有限状态机状态。</returns>
+        [Preserve]
         public bool HasState<TState>() where TState : FsmState<T>
         {
             return m_States.ContainsKey(typeof(TState));
@@ -297,6 +314,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="stateType">要检查的有限状态机状态类型。</param>
         /// <returns>是否存在有限状态机状态。</returns>
+        [Preserve]
         public bool HasState(Type stateType)
         {
             if (stateType == null)
@@ -317,6 +335,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="TState">要获取的有限状态机状态类型。</typeparam>
         /// <returns>要获取的有限状态机状态。</returns>
+        [Preserve]
         public TState GetState<TState>() where TState : FsmState<T>
         {
             FsmState<T> state = null;
@@ -333,6 +352,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="stateType">要获取的有限状态机状态类型。</param>
         /// <returns>要获取的有限状态机状态。</returns>
+        [Preserve]
         public FsmState<T> GetState(Type stateType)
         {
             if (stateType == null)
@@ -358,6 +378,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 获取有限状态机的所有状态。
         /// </summary>
         /// <returns>有限状态机的所有状态。</returns>
+        [Preserve]
         public FsmState<T>[] GetAllStates()
         {
             FsmState<T>[] results = new FsmState<T>[m_States.Count];
@@ -369,6 +390,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 获取有限状态机的所有状态。
         /// </summary>
         /// <param name="results">有限状态机的所有状态。</param>
+        [Preserve]
         public void GetAllStates(List<FsmState<T>> results)
         {
             if (results == null)
@@ -388,6 +410,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>有限状态机数据是否存在。</returns>
+        [Preserve]
         public bool HasData(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -409,6 +432,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>要获取的有限状态机数据。</returns>
+        [Preserve]
         public TData GetData<TData>(string name) where TData : Variable
         {
             return (TData)GetData(name);
@@ -419,6 +443,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>要获取的有限状态机数据。</returns>
+        [Preserve]
         public Variable GetData(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -446,6 +471,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
+        [Preserve]
         public void SetData<TData>(string name, TData data) where TData : Variable
         {
             SetData(name, (Variable)data);
@@ -456,6 +482,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
+        [Preserve]
         public void SetData(string name, Variable data)
         {
             if (string.IsNullOrEmpty(name))
@@ -482,6 +509,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>是否移除有限状态机数据成功。</returns>
+        [Preserve]
         public bool RemoveData(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -506,6 +534,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 重置有限状态机。
         /// </summary>
+        [Preserve]
         public void Reset()
         {
             if (m_IsDestroyed)
@@ -539,6 +568,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 添加有限状态机状态。
         /// </summary>
         /// <param name="state">要添加的有限状态机状态。</param>
+        [Preserve]
         public void AddState(FsmState<T> state)
         {
             if (m_IsDestroyed)
@@ -566,6 +596,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="TState">要移除的有限状态机状态类型。</typeparam>
         /// <returns>是否移除有限状态机状态成功。</returns>
+        [Preserve]
         public bool RemoveState<TState>() where TState : FsmState<T>
         {
             return RemoveState(typeof(TState));
@@ -576,6 +607,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="stateType">要移除的有限状态机状态类型。</param>
         /// <returns>是否移除有限状态机状态成功。</returns>
+        [Preserve]
         public bool RemoveState(Type stateType)
         {
             if (m_IsDestroyed)
