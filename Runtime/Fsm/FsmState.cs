@@ -83,13 +83,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="fsm">有限状态机引用。</param>
         public void ChangeToState<TState>(IFsm<T> fsm) where TState : FsmState<T>
         {
-            Fsm<T> fsmImplement = (Fsm<T>)fsm;
-            if (fsmImplement == null)
-            {
-                throw new GameFrameworkException("FSM is invalid.");
-            }
-
-            fsmImplement.ChangeState<TState>();
+            ChangeState<TState>(fsm);
         }
 
         /// <summary>
