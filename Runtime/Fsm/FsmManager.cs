@@ -27,8 +27,8 @@ namespace GameFrameX.Fsm.Runtime
         public FsmManager()
         {
             m_Fsms = new Dictionary<TypeNamePair, FsmBase>();
-            m_TempFsms = new List<FsmBase>(16);
-            m_TempFixedFsms = new List<FsmBase>(16);
+            m_TempFsms = new List<FsmBase>(64);
+            m_TempFixedFsms = new List<FsmBase>(64);
         }
 
         /// <summary>
