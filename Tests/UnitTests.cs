@@ -1,37 +1,64 @@
-using System;
+using GameFrameX.Fsm.Runtime;
 using NUnit.Framework;
 
 namespace GameFrameX.FSM.Tests
 {
     internal class UnitTests
     {
-        private DateTime dateTime, dateTime1;
+        private FsmManager m_FsmManager;
 
         [SetUp]
         public void Setup()
         {
-            dateTime = DateTime.Now;
-            dateTime1 = DateTime.Now.AddHours(1);
+            m_FsmManager = new FsmManager();
         }
 
-        // Here is an example of a unit test for the IsUnixSameDay method
-        [Test]
-        public void TestIsUnixSameDay()
+        [TearDown]
+        public void Teardown()
         {
-            // Arrange
-            // long timestamp1 = 1617842400; // April 7, 2021 12:00:00 AM UTC
-            // long timestamp2 = 1617896400; // April 7, 2021 12:00:00 PM UTC
-
-            // Act
+            if (m_FsmManager != null)
+            {
+                m_FsmManager.Shutdown();
+                m_FsmManager = null;
+            }
         }
 
+        [Test]
+        public void TestCreateFsm()
+        {
+            var owner = new object();
+            IFsm<object> fsm = m_FsmManager.CreateFsm(owner, new TestIdleState());
+            Assert.IsNotNull(fsm);
+            Assert.AreEqual(1, m_FsmManager.Count);
+            Assert.IsFalse(fsm.IsRunning);
+        }
 
         [Test]
-        public void Test1()
+        public void TestStartAndDestroyFsm()
         {
-            Assert.That(dateTime1.Year, Is.EqualTo(dateTime.Year));
-            Assert.That(dateTime1.Month, Is.EqualTo(dateTime.Month));
-            Assert.That(dateTime1.Day, Is.EqualTo(dateTime.Day));
+            var owner = new object();
+            IFsm<object> fsm = m_FsmManager.CreateFsm(owner, new TestIdleState());
+            fsm.Start<TestIdleState>();
+            Assert.IsTrue(fsm.IsRunning);
+            Assert.AreEqual(nameof(TestIdleState), fsm.CurrentStateName);
+
+            bool destroyed = m_FsmManager.DestroyFsm<object>();
+            Assert.IsTrue(destroyed);
+            Assert.AreEqual(0, m_FsmManager.Count);
+        }
+
+        [Test]
+        public void TestHasFsm()
+        {
+            Assert.IsFalse(m_FsmManager.HasFsm<object>());
+
+            var owner = new object();
+            m_FsmManager.CreateFsm(owner, new TestIdleState());
+            Assert.IsTrue(m_FsmManager.HasFsm<object>());
+        }
+
+        private class TestIdleState : FsmState<object>
+        {
         }
     }
 }
