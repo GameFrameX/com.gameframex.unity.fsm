@@ -121,7 +121,7 @@ namespace GameFrameX.Fsm.Runtime
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
-            fsm.m_States.Clear();
+            fsm.m_States = new Dictionary<Type, FsmState<T>>(states.Length);
             fsm.Name = name;
             fsm.m_Owner = owner;
             fsm.m_IsDestroyed = false;
@@ -165,7 +165,7 @@ namespace GameFrameX.Fsm.Runtime
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
-            fsm.m_States.Clear();
+            fsm.m_States = new Dictionary<Type, FsmState<T>>(states.Count);
             fsm.Name = name;
             fsm.m_Owner = owner;
             fsm.m_IsDestroyed = false;
