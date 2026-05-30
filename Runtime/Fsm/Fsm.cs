@@ -30,7 +30,7 @@ namespace GameFrameX.Fsm.Runtime
         public Fsm()
         {
             m_Owner = null;
-            m_States = new Dictionary<Type, FsmState<T>>();
+            m_States = new Dictionary<Type, FsmState<T>>(8);
             m_Datas = null;
             m_CurrentState = null;
             m_CurrentStateTime = 0f;
