@@ -176,5 +176,31 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>是否移除有限状态机数据成功。</returns>
         bool RemoveData(string name);
+
+        /// <summary>
+        /// 重置有限状态机。
+        /// </summary>
+        /// <remarks>退出当前状态、清空自定义数据，但保留所有已注册的状态，可重新调用 Start。</remarks>
+        void Reset();
+
+        /// <summary>
+        /// 添加有限状态机状态。
+        /// </summary>
+        /// <param name="state">要添加的有限状态机状态。</param>
+        void AddState(FsmState<T> state);
+
+        /// <summary>
+        /// 移除有限状态机状态。
+        /// </summary>
+        /// <typeparam name="TState">要移除的有限状态机状态类型。</typeparam>
+        /// <returns>是否移除有限状态机状态成功。</returns>
+        bool RemoveState<TState>() where TState : FsmState<T>;
+
+        /// <summary>
+        /// 移除有限状态机状态。
+        /// </summary>
+        /// <param name="stateType">要移除的有限状态机状态类型。</param>
+        /// <returns>是否移除有限状态机状态成功。</returns>
+        bool RemoveState(Type stateType);
     }
 }

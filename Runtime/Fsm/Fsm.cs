@@ -504,6 +504,112 @@ namespace GameFrameX.Fsm.Runtime
         }
 
         /// <summary>
+        /// 重置有限状态机。
+        /// </summary>
+        public void Reset()
+        {
+            if (m_IsDestroyed)
+            {
+                throw new GameFrameworkException("FSM is destroyed, can not reset.");
+            }
+
+            if (m_CurrentState != null)
+            {
+                m_CurrentState.OnLeave(this, false);
+            }
+
+            m_CurrentState = null;
+            m_CurrentStateTime = 0f;
+
+            if (m_Datas != null)
+            {
+                foreach (KeyValuePair<string, Variable> data in m_Datas)
+                {
+                    if (data.Value != null)
+                    {
+                        ReferencePool.Release(data.Value);
+                    }
+                }
+
+                m_Datas.Clear();
+            }
+        }
+
+        /// <summary>
+        /// 添加有限状态机状态。
+        /// </summary>
+        /// <param name="state">要添加的有限状态机状态。</param>
+        public void AddState(FsmState<T> state)
+        {
+            if (m_IsDestroyed)
+            {
+                throw new GameFrameworkException("FSM is destroyed, can not add state.");
+            }
+
+            if (state == null)
+            {
+                throw new GameFrameworkException("State is invalid.");
+            }
+
+            Type stateType = state.GetType();
+            if (m_States.ContainsKey(stateType))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", new TypeNamePair(typeof(T), Name), stateType.FullName));
+            }
+
+            m_States.Add(stateType, state);
+            state.OnInit(this);
+        }
+
+        /// <summary>
+        /// 移除有限状态机状态。
+        /// </summary>
+        /// <typeparam name="TState">要移除的有限状态机状态类型。</typeparam>
+        /// <returns>是否移除有限状态机状态成功。</returns>
+        public bool RemoveState<TState>() where TState : FsmState<T>
+        {
+            return RemoveState(typeof(TState));
+        }
+
+        /// <summary>
+        /// 移除有限状态机状态。
+        /// </summary>
+        /// <param name="stateType">要移除的有限状态机状态类型。</param>
+        /// <returns>是否移除有限状态机状态成功。</returns>
+        public bool RemoveState(Type stateType)
+        {
+            if (m_IsDestroyed)
+            {
+                throw new GameFrameworkException("FSM is destroyed, can not remove state.");
+            }
+
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
+            FsmState<T> state = null;
+            if (!m_States.TryGetValue(stateType, out state))
+            {
+                return false;
+            }
+
+            if (m_CurrentState == state)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not remove current state '{1}'.", new TypeNamePair(typeof(T), Name), stateType.FullName));
+            }
+
+            state.OnDestroy(this);
+            m_States.Remove(stateType);
+            return true;
+        }
+
+        /// <summary>
         /// 有限状态机轮询。
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
