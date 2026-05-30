@@ -2,7 +2,7 @@
 
 <img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160"/>
 
-# Game Frame X FSM Component
+# GameFrameX FSM
 
 [![License](https://img.shields.io/github/license/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/releases)
@@ -12,7 +12,7 @@ All-in-One Solution for Indie Game Development · Empowering Indie Developers' D
 
 [Documentation](https://gameframex.doc.alianblank.com) · [Quick Start](#quick-start) · [QQ Group](https://qm.qq.com/q/5kbDVBdUeS) · **Language**
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+**English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 </div>
 
@@ -20,79 +20,127 @@ All-in-One Solution for Indie Game Development · Empowering Indie Developers' D
 
 ## Project Overview
 
-The **FSM (Finite State Machine) Component** provides interfaces for managing and controlling the creation, retrieval, inspection, and destruction of finite state machines.
+A generic finite state machine package for Unity. Manages creation, lifecycle, and state transitions of typed FSMs with per-FSM data dictionaries.
 
 ### Features
 
-- `Count` property: Get the current number of state machines.
-- `HasFsm` method: Check if a state machine of the specified type already exists.
-- `GetFsm` method: Get a state machine instance by specified type.
-- `GetAllFsmList` method: Get all state machine instances.
-- `CreateFsm` method: Create a new state machine instance.
-- `DestroyFsm` method: Destroy a specified state machine instance.
+- **Type-safe FSMs** — Each FSM is parameterized by an owner type `T`. Multiple FSMs of the same type can coexist with optional names.
+- **State lifecycle** — Six virtual hooks: `OnInit`, `OnEnter`, `OnUpdate`, `OnFixedUpdate`, `OnLeave`, `OnDestroy`.
+- **State transitions** — `ChangeState<TState>()` from within any state.
+- **Variable storage** — Cross-state key-value data via `GetData<TData>(name)` / `SetData(name, value)`, pooled for zero GC.
+- **Dynamic state management** — `AddState` / `RemoveState` on running FSMs.
+- **Reset support** — `Reset()` clears data and exits the current state while keeping registered states intact.
+- **FixedUpdate polling** — Dual `Update` + `FixedUpdate` tick paths.
+- **Runtime Inspector** — Custom editor shows live FSM state and elapsed time during Play mode.
 
 ## Quick Start
 
-### Installation
+Edit your Unity project's `Packages/manifest.json` and add the `scopedRegistries` section:
 
-Choose one of the following methods:
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.gameframex.unity.fsm": "1.0.4"
+  }
+}
+```
 
-1. Add to `manifest.json` dependencies:
-   ```json
-   {
-      "com.gameframex.unity.fsm": "https://github.com/AlianBlank/com.gameframex.unity.fsm.git"
-   }
-   ```
-2. Use **Packages Manager** in Unity with **Git URL**: `https://github.com/AlianBlank/com.gameframex.unity.fsm.git`
-3. Clone the repository into your Unity project's `Packages` directory. It will be loaded automatically.
+`scopes` controls which packages are resolved through this registry. Only packages whose names start with `com.gameframex` will be fetched from it.
 
 ## Usage Examples
 
-### Creating a State Machine
+### Define States
 
-Use `CreateFsm` to create a new finite state machine. You need to provide an owner object, an optional name, and a collection of states.
+Subclass `FsmState<T>` and override lifecycle methods:
 
 ```csharp
-public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : class
+public class IdleState : FsmState<Player>
 {
-    return m_FsmManager.CreateFsm(owner, states);
+    protected override void OnEnter(IFsm<Player> fsm)
+    {
+        // Called when this state becomes active
+    }
+
+    protected override void OnUpdate(IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
+    {
+        // Called every frame while active
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ChangeState<MoveState>(fsm);
+        }
+    }
+
+    protected override void OnLeave(IFsm<Player> fsm, bool isShutdown)
+    {
+        // Called when transitioning away
+    }
 }
 ```
 
-### Getting a State Machine
-
-Retrieve a finite state machine by owner type or name.
+### Create and Start an FSM
 
 ```csharp
-public IFsm<T> GetFsm<T>() where T : class
+// Standard: via GameEntry (no dependency on com.gameframex.unity.entry)
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+IFsm<Player> fsm = fsmComponent.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+
+// Shortcut: via GameApp (requires com.gameframex.unity.entry)
+IFsm<Player> fsm = GameApp.Fsm.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+```
+
+### Store and Read Cross-State Data
+
+```csharp
+// In any state's OnEnter / OnUpdate / ...
+fsm.SetData("Health", 100);
+int hp = fsm.GetData<int>("Health");
+
+if (fsm.HasData("Health"))
 {
-    return m_FsmManager.GetFsm<T>();
+    fsm.RemoveData("Health");
 }
 ```
 
-### Checking State Machine Existence
-
-Call `HasFsm` to confirm whether a specific finite state machine has been created.
+### Dynamic State Management
 
 ```csharp
-public bool HasFsm<T>() where T : class
-{
-    return m_FsmManager.HasFsm<T>();
-}
+// Add a new state to a running FSM
+fsm.AddState(new JumpState());
+
+// Remove a state (cannot remove the current state)
+fsm.RemoveState<IdleState>();
 ```
 
-### Destroying a State Machine
-
-Use `DestroyFsm` to destroy a state machine that is no longer needed, reclaiming resources.
+### Reset an FSM
 
 ```csharp
-public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
-{
-    return m_FsmManager.DestroyFsm(fsm);
-}
+// Exits current state, clears all data, keeps registered states
+fsm.Reset();
+// Can be restarted with Start<TState>()
+fsm.Start<IdleState>();
 ```
 
-> **Note:** Ensure the FSM manager `m_FsmManager` is properly initialized before calling any state machine management methods. This component interacts with other framework modules, so ensure the game framework is correctly set up and initialized.
+### Destroy an FSM
+
+```csharp
+// Standard: via GameEntry (no dependency on com.gameframex.unity.entry)
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+fsmComponent.DestroyFsm(fsm);
+
+// Shortcut: via GameApp (requires com.gameframex.unity.entry)
+GameApp.Fsm.DestroyFsm(fsm);
+```
 
 ## Documentation & Resources
 

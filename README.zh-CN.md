@@ -2,7 +2,7 @@
 
 <img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160"/>
 
-# Game Frame X FSM 有限状态机组件
+# GameFrameX FSM
 
 [![License](https://img.shields.io/github/license/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/releases)
@@ -20,77 +20,127 @@
 
 ## 项目简介
 
-**FSM 有限状态机组件 (Fsm Component)** - 提供状态机组件相关的接口，用于管理和控制有限状态机（FSM）的创建、获取、检查以及销毁。
+Unity 泛型有限状态机包。管理类型化状态机的创建、生命周期和状态转换，支持每个 FSM 的数据字典。
 
 ### 功能
 
-- `Count` 属性：获取当前状态机的数量。
-- `HasFsm` 方法：检查指定类型的状态机是否已经存在。
-- `GetFsm` 方法：根据指定类型获取状态机实例。
-- `GetAllFsmList` 方法：获取所有状态机实例。
-- `CreateFsm` 方法：创建新的状态机实例。
-- `DestroyFsm` 方法：销毁指定的状态机实例。
+- **类型安全 FSM** — 每个 FSM 以拥有者类型 `T` 参数化。同类型多个 FSM 可通过可选名称共存。
+- **状态生命周期** — 六个虚方法钩子：`OnInit`、`OnEnter`、`OnUpdate`、`OnFixedUpdate`、`OnLeave`、`OnDestroy`。
+- **状态转换** — 在任意状态内调用 `ChangeState<TState>()` 切换状态。
+- **变量存储** — 通过 `GetData<TData>(name)` / `SetData(name, value)` 实现跨状态键值数据，对象池化零 GC。
+- **动态状态管理** — 运行时 `AddState` / `RemoveState`。
+- **Reset 支持** — `Reset()` 清除数据并退出当前状态，保留已注册状态。
+- **FixedUpdate 轮询** — 双 `Update` + `FixedUpdate` 驱动路径。
+- **运行时 Inspector** — 自定义编辑器在 Play 模式下实时显示 FSM 状态和经过时间。
 
 ## 快速开始
 
-### 安装方式（任选其一）
+编辑 Unity 项目的 `Packages/manifest.json`，添加 `scopedRegistries` 部分：
 
-1. 直接在 `manifest.json` 的 `dependencies` 节点下添加以下内容：
-   ```json
-   {
-      "com.gameframex.unity.fsm": "https://github.com/AlianBlank/com.gameframex.unity.fsm.git"
-   }
-   ```
-2. 在 Unity 的 `Packages Manager` 中使用 `Git URL` 的方式添加库，地址为：`https://github.com/AlianBlank/com.gameframex.unity.fsm.git`
-3. 直接下载仓库放置到 Unity 项目的 `Packages` 目录下，会自动加载识别。
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.gameframex.unity.fsm": "1.0.4"
+  }
+}
+```
+
+`scopes` 控制哪些包通过此注册表解析。只有以 `com.gameframex` 开头的包才会从这个注册表获取。
 
 ## 使用示例
 
-### 创建状态机
+### 定义状态
 
-使用 `CreateFsm` 方法创建一个新的有限状态机。需要提供拥有者对象、状态机名称（可选）和状态集合。
+继承 `FsmState<T>` 并重写生命周期方法：
 
 ```csharp
-public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : class
+public class IdleState : FsmState<Player>
 {
-    return m_FsmManager.CreateFsm(owner, states);
+    protected override void OnEnter(IFsm<Player> fsm)
+    {
+        // 当此状态被激活时调用
+    }
+
+    protected override void OnUpdate(IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
+    {
+        // 激活期间每帧调用
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ChangeState<MoveState>(fsm);
+        }
+    }
+
+    protected override void OnLeave(IFsm<Player> fsm, bool isShutdown)
+    {
+        // 离开此状态时调用
+    }
 }
 ```
 
-### 获取状态机
-
-根据拥有者类型或名称来获取对应的有限状态机。
+### 创建并启动 FSM
 
 ```csharp
-public IFsm<T> GetFsm<T>() where T : class
+// 标准方式：通过 GameEntry（不依赖 com.gameframex.unity.entry）
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+IFsm<Player> fsm = fsmComponent.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+
+// 快捷方式：通过 GameApp（需要 com.gameframex.unity.entry）
+IFsm<Player> fsm = GameApp.Fsm.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+```
+
+### 存取跨状态数据
+
+```csharp
+// 在任意状态的 OnEnter / OnUpdate / ... 中
+fsm.SetData("Health", 100);
+int hp = fsm.GetData<int>("Health");
+
+if (fsm.HasData("Health"))
 {
-    return m_FsmManager.GetFsm<T>();
+    fsm.RemoveData("Health");
 }
 ```
 
-### 检查状态机存在
-
-调用 `HasFsm` 方法确认是否已创建特定的有限状态机。
+### 动态状态管理
 
 ```csharp
-public bool HasFsm<T>() where T : class
-{
-    return m_FsmManager.HasFsm<T>();
-}
+// 向运行中的 FSM 添加新状态
+fsm.AddState(new JumpState());
+
+// 移除状态（不能移除当前状态）
+fsm.RemoveState<IdleState>();
 ```
 
-### 销毁状态机
-
-使用 `DestroyFsm` 方法销毁不再需要的状态机，回收资源。
+### 重置 FSM
 
 ```csharp
-public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
-{
-    return m_FsmManager.DestroyFsm(fsm);
-}
+// 退出当前状态，清除所有数据，保留已注册状态
+fsm.Reset();
+// 可通过 Start<TState>() 重新启动
+fsm.Start<IdleState>();
 ```
 
-> **注意：** 确保在调用任何状态机管理方法之前，状态机管理器 `m_FsmManager` 已被正确初始化，否则可能会引发错误。此组件需要与游戏框架的其他模块和组件进行交互使用，需保证游戏框架已被正确设置并初始化。
+### 销毁 FSM
+
+```csharp
+// 标准方式：通过 GameEntry（不依赖 com.gameframex.unity.entry）
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+fsmComponent.DestroyFsm(fsm);
+
+// 快捷方式：通过 GameApp（需要 com.gameframex.unity.entry）
+GameApp.Fsm.DestroyFsm(fsm);
+```
 
 ## 文档与资源
 

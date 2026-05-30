@@ -2,7 +2,7 @@
 
 <img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160"/>
 
-# Game Frame X FSM 有限状態マシンコンポーネント
+# GameFrameX FSM
 
 [![License](https://img.shields.io/github/license/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/gameframex/com.gameframex.unity.fsm)](https://github.com/gameframex/com.gameframex.unity.fsm/releases)
@@ -20,77 +20,127 @@
 
 ## プロジェクト概要
 
-**FSM 有限状態マシンコンポーネント (Fsm Component)** - 有限状態マシン（FSM）の作成、取得、検査、破棄を管理および制御するためのインターフェースを提供します。
+Unity向け汎用有限状態マシンパッケージ。型付きFSMの作成、ライフサイクル、状態遷移を管理し、FSMごとのデータ辞書をサポートします。
 
 ### 機能
 
-- `Count` プロパティ：現在の状態マシンの数を取得します。
-- `HasFsm` メソッド：指定された型の状態マシンが既に存在するかを確認します。
-- `GetFsm` メソッド：指定された型で状態マシンインスタンスを取得します。
-- `GetAllFsmList` メソッド：すべての状態マシンインスタンスを取得します。
-- `CreateFsm` メソッド：新しい状態マシンインスタンスを作成します。
-- `DestroyFsm` メソッド：指定された状態マシンインスタンスを破棄します。
+- **型安全な FSM** — 各FSMはオーナー型`T`でパラメータ化されています。オプションの名前で同型の複数FSMを共存可能。
+- **状態ライフサイクル** — 6つの仮想フック：`OnInit`、`OnEnter`、`OnUpdate`、`OnFixedUpdate`、`OnLeave`、`OnDestroy`。
+- **状態遷移** — 任意の状態内から`ChangeState<TState>()`を呼び出して遷移。
+- **変数ストレージ** — `GetData<TData>(name)` / `SetData(name, value)`による状態間キーバリューデータ。オブジェクトプールでゼロGC。
+- **動的状態管理** — 実行中のFSMに対する`AddState` / `RemoveState`。
+- **リセットサポート** — `Reset()`はデータをクリアし現在の状態を終了しますが、登録済み状態は保持。
+- **FixedUpdateポーリング** — `Update` + `FixedUpdate`のデュアル駆動パス。
+- **ランタイムインスペクター** — カスタムエディターがPlayモード中にFSMの状態と経過時間をリアルタイム表示。
 
 ## クイックスタート
 
-### インストール方法（いずれかを選択）
+Unityプロジェクトの`Packages/manifest.json`を編集し、`scopedRegistries`セクションを追加してください：
 
-1. `manifest.json` の `dependencies` に以下を追加：
-   ```json
-   {
-      "com.gameframex.unity.fsm": "https://github.com/AlianBlank/com.gameframex.unity.fsm.git"
-   }
-   ```
-2. Unity の `Packages Manager` で `Git URL` を使用して追加：`https://github.com/AlianBlank/com.gameframex.unity.fsm.git`
-3. リポジトリを直接ダウンロードして Unity プロジェクトの `Packages` ディレクトリに配置すると、自動的に読み込まれます。
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "GameFrameX",
+      "url": "https://gameframex.upm.alianblank.uk",
+      "scopes": [
+        "com.gameframex"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.gameframex.unity.fsm": "1.0.4"
+  }
+}
+```
+
+`scopes`は、どのパッケージをこのレジストリから解決するかを制御します。`com.gameframex`で始まるパッケージのみがこのレジストリから取得されます。
 
 ## 使用例
 
-### 状態マシンの作成
+### 状態の定義
 
-`CreateFsm` メソッドを使用して新しい有限状態マシンを作成します。オーナーオブジェクト、状態マシン名（オプション）、状態のコレクションを提供する必要があります。
+`FsmState<T>`を継承し、ライフサイクルメソッドをオーバーライドします：
 
 ```csharp
-public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : class
+public class IdleState : FsmState<Player>
 {
-    return m_FsmManager.CreateFsm(owner, states);
+    protected override void OnEnter(IFsm<Player> fsm)
+    {
+        // この状態がアクティブになった時に呼ばれる
+    }
+
+    protected override void OnUpdate(IFsm<Player> fsm, float elapseSeconds, float realElapseSeconds)
+    {
+        // アクティブ中毎フレーム呼ばれる
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ChangeState<MoveState>(fsm);
+        }
+    }
+
+    protected override void OnLeave(IFsm<Player> fsm, bool isShutdown)
+    {
+        // この状態から離脱する時に呼ばれる
+    }
 }
 ```
 
-### 状態マシンの取得
-
-オーナーの型または名前で対応する有限状態マシンを取得します。
+### FSMの作成と開始
 
 ```csharp
-public IFsm<T> GetFsm<T>() where T : class
+// 標準: GameEntry経由（com.gameframex.unity.entry非依存）
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+IFsm<Player> fsm = fsmComponent.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+
+// ショートカット: GameApp経由（com.gameframex.unity.entryが必要）
+IFsm<Player> fsm = GameApp.Fsm.CreateFsm(player, new IdleState(), new MoveState());
+fsm.Start<IdleState>();
+```
+
+### 状態間データの保存と読み取り
+
+```csharp
+// 任意の状態のOnEnter / OnUpdate / ...内で
+fsm.SetData("Health", 100);
+int hp = fsm.GetData<int>("Health");
+
+if (fsm.HasData("Health"))
 {
-    return m_FsmManager.GetFsm<T>();
+    fsm.RemoveData("Health");
 }
 ```
 
-### 状態マシンの存在確認
-
-`HasFsm` メソッドを呼び出して、特定の有限状態マシンが作成されているかを確認します。
+### 動的状態管理
 
 ```csharp
-public bool HasFsm<T>() where T : class
-{
-    return m_FsmManager.HasFsm<T>();
-}
+// 実行中のFSMに新しい状態を追加
+fsm.AddState(new JumpState());
+
+// 状態の削除（現在の状態は削除不可）
+fsm.RemoveState<IdleState>();
 ```
 
-### 状態マシンの破棄
-
-`DestroyFsm` メソッドを使用して不要になった状態マシンを破棄し、リソースを解放します。
+### FSMのリセット
 
 ```csharp
-public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
-{
-    return m_FsmManager.DestroyFsm(fsm);
-}
+// 現在の状態を終了し、全データをクリア、登録済み状態は保持
+fsm.Reset();
+// Start<TState>()で再開可能
+fsm.Start<IdleState>();
 ```
 
-> **注意：** 状態マシン管理メソッドを呼び出す前に、状態マシンマネージャー `m_FsmManager` が正しく初期化されていることを確認してください。このコンポーネントは他のフレームワークモジュールと連携するため、ゲームフレームワークが正しく設定および初期化されていることを確認してください。
+### FSMの破棄
+
+```csharp
+// 標準: GameEntry経由（com.gameframex.unity.entry非依存）
+var fsmComponent = GameEntry.GetComponent<FsmComponent>();
+fsmComponent.DestroyFsm(fsm);
+
+// ショートカット: GameApp経由（com.gameframex.unity.entryが必要）
+GameApp.Fsm.DestroyFsm(fsm);
+```
 
 ## ドキュメントとリソース
 
@@ -102,8 +152,8 @@ public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
 
 ## 変更履歴
 
-変更履歴は [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases) をご覧ください。
+[Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases)で変更履歴を確認してください。
 
 ## ライセンス
 
-このプロジェクトは [MIT ライセンス](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE) の下で公開されています。
+このプロジェクトは[MITライセンス](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE)の下で公開されています。
