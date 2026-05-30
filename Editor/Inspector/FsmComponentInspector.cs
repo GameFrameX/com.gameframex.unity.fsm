@@ -24,13 +24,13 @@ namespace GameFrameX.Fsm.Editor
                 return;
             }
 
-            var t = (FsmComponent)target;
+            FsmComponent t = (FsmComponent)target;
 
             if (IsPrefabInHierarchy(t.gameObject))
             {
                 EditorGUILayout.LabelField("FSM Count", t.Count.ToString());
 
-                var fsms = t.GetAllFsmList();
+                FsmBase[] fsms = t.GetAllFsmList();
                 foreach (FsmBase fsm in fsms)
                 {
                     DrawFsm(fsm);
