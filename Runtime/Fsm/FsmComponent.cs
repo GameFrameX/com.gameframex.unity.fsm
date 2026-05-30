@@ -18,7 +18,7 @@ namespace GameFrameX.Fsm.Runtime
     /// 有限状态机组件。
     /// </summary>
     [DisallowMultipleComponent]
-    [AddComponentMenu("Game Framework/FSM")]
+    [AddComponentMenu("GameFrameX/FSM")]
     public sealed class FsmComponent : GameFrameworkComponent
     {
         private IFsmManager m_FsmManager = null;
@@ -49,6 +49,11 @@ namespace GameFrameX.Fsm.Runtime
 
         private void FixedUpdate()
         {
+            if (m_FsmManager == null)
+            {
+                return;
+            }
+
             m_FsmManager.FixedUpdate(Time.fixedDeltaTime, Time.fixedTime);
         }
 
