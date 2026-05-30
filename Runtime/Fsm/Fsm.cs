@@ -121,6 +121,7 @@ namespace GameFrameX.Fsm.Runtime
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
+            fsm.m_States.Clear();
             fsm.Name = name;
             fsm.m_Owner = owner;
             fsm.m_IsDestroyed = false;
@@ -164,6 +165,7 @@ namespace GameFrameX.Fsm.Runtime
             }
 
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
+            fsm.m_States.Clear();
             fsm.Name = name;
             fsm.m_Owner = owner;
             fsm.m_IsDestroyed = false;
@@ -358,13 +360,8 @@ namespace GameFrameX.Fsm.Runtime
         /// <returns>有限状态机的所有状态。</returns>
         public FsmState<T>[] GetAllStates()
         {
-            int index = 0;
             FsmState<T>[] results = new FsmState<T>[m_States.Count];
-            foreach (KeyValuePair<Type, FsmState<T>> state in m_States)
-            {
-                results[index++] = state.Value;
-            }
-
+            m_States.Values.CopyTo(results, 0);
             return results;
         }
 
