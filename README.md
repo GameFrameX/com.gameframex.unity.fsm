@@ -157,6 +157,13 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 See [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases) for changelog.
 
+
+## Dependencies
+
+| Package | Description |
+|---------|-------------|
+| (无) | - |
+
 ## License
 
 See [LICENSE.md](LICENSE.md) for license information.

@@ -157,6 +157,13 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases)에서 변경 로그를 확인하세요.
 
+
+## 의존성
+
+| 패키지 | 설명 |
+|--------|------|
+| (无) | - |
+
 ## 라이선스
 
 자세한 내용은 [LICENSE.md](LICENSE.md) 파일을 참조하세요.

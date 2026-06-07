@@ -157,6 +157,13 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases)で変更履歴を確認してください。
 
+
+## 依存関係
+
+| パッケージ | 説明 |
+|----------|------|
+| (无) | - |
+
 ## ライセンス
 
 詳しくは [LICENSE.md](LICENSE.md) をご参照ください。

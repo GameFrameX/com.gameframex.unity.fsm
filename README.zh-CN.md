@@ -157,6 +157,13 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 查看 [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases) 了解更新日志。
 
+
+## 依赖
+
+| 包 | 说明 |
+|----|------|
+| (无) | - |
+
 ## 开源协议
 
 详见 [LICENSE.md](LICENSE.md) 文件。
