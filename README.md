@@ -159,4 +159,4 @@ See [Releases](https://github.com/gameframex/com.gameframex.unity.fsm/releases) 
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE).
+See [LICENSE.md](LICENSE.md) for license information.

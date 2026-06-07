@@ -159,4 +159,4 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 ## 開源協議
 
-本專案基於 [MIT 協議](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE) 開源。
+詳見 [LICENSE.md](LICENSE.md) 檔案。

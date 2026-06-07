@@ -159,4 +159,4 @@ GameApp.Fsm.DestroyFsm(fsm);
 
 ## 라이선스
 
-이 프로젝트는 [MIT 라이선스](https://github.com/gameframex/com.gameframex.unity.fsm/blob/main/LICENSE) 하에 공개되어 있습니다.
+자세한 내용은 [LICENSE.md](LICENSE.md) 파일을 참조하세요.
