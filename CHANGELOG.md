@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.1.0...1.1.1) (2026-06-07)
+
+
+### Bug Fixes
+
+* 补全包规范文件（LICENSE/CHANGELOG/URL 字段/unity 字段） ([f8722b9](https://github.com/gameframex/com.gameframex.unity.fsm/commit/f8722b9cc1b1678a5862105937c925667e17cc7f))
+
 # [1.1.0](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.0.4...1.1.0) (2026-05-30)
 
 
