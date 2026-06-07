@@ -20,6 +20,7 @@
 [English](README.md) | **简体中文** | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 </div>
+
 ## 项目简介
 
 Unity 泛型有限状态机包。管理类型化状态机的创建、生命周期和状态转换，支持每个 FSM 的数据字典。

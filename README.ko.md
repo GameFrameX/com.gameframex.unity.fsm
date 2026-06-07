@@ -20,6 +20,7 @@
 [English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | **한국어**
 
 </div>
+
 ## 프로젝트 개요
 
 Unity용 제네릭 유한 상태 머신 패키지입니다. 타입화된 FSM의 생성, 라이프사이클, 상태 전환을 관리하며 FSM별 데이터 딕셔너리를 지원합니다.

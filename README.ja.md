@@ -20,6 +20,7 @@
 [English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | **日本語** | [한국어](README.ko.md)
 
 </div>
+
 ## プロジェクト概要
 
 Unity向け汎用有限状態マシンパッケージ。型付きFSMの作成、ライフサイクル、状態遷移を管理し、FSMごとのデータ辞書をサポートします。
