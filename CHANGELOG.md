@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.1.1...1.2.0) (2026-07-03)
+
+
+### Features
+
+* **fsm:** 为 FsmComponent 添加自动组件注册特性 ([fc4256b](https://github.com/gameframex/com.gameframex.unity.fsm/commit/fc4256b8d647aa7e1562f0063da7f35d47c77cfb))
+
 ## [1.1.1](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.1.0...1.1.1) (2026-06-07)
 
 
