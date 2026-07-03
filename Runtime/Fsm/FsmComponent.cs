@@ -43,6 +43,7 @@ namespace GameFrameX.Fsm.Runtime
     [DisallowMultipleComponent]
     [AddComponentMenu("GameFrameX/FSM")]
     [Preserve]
+    [GameFrameXAutoComponent(-6000)]
     public sealed class FsmComponent : GameFrameworkComponent
     {
         private IFsmManager m_FsmManager = null;
