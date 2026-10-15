@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.2.0...2.0.0) (2026-10-15)
+
+
+* feat(module)!: FSM 模块薄入口化并迁移接口契约 ([df9f2a6](https://github.com/gameframex/com.gameframex.unity.fsm/commit/df9f2a6abd5e521cf23a4e545265c33e7fe93919))
+
+
+### BREAKING CHANGES
+
+* FsmComponent 序列化字段移除，Play 期经活视图/模块 API 调整。
+
 ## [Unreleased]
 
 ### ⚠ BREAKING CHANGES
