@@ -33,7 +33,6 @@ using System;
 using System.Collections.Generic;
 using GameFrameX.Runtime;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace GameFrameX.Fsm.Runtime
 {
@@ -42,7 +41,7 @@ namespace GameFrameX.Fsm.Runtime
     /// </summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("GameFrameX/FSM")]
-    [Preserve]
+    [UnityEngine.Scripting.Preserve]
     [GameFrameXAutoComponent(-6000)]
     public sealed class FsmComponent : GameFrameworkComponent
     {
@@ -51,7 +50,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机数量。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public int Count
         {
             get { return m_FsmManager.Count; }
@@ -88,7 +87,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <returns>是否存在有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool HasFsm<T>() where T : class
         {
             return m_FsmManager.HasFsm<T>();
@@ -99,7 +98,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>是否存在有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool HasFsm(Type ownerType)
         {
             return m_FsmManager.HasFsm(ownerType);
@@ -111,7 +110,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>是否存在有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool HasFsm<T>(string name) where T : class
         {
             return m_FsmManager.HasFsm<T>(name);
@@ -123,7 +122,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>是否存在有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool HasFsm(Type ownerType, string name)
         {
             return m_FsmManager.HasFsm(ownerType, name);
@@ -134,7 +133,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <returns>要获取的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> GetFsm<T>() where T : class
         {
             return m_FsmManager.GetFsm<T>();
@@ -145,7 +144,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>要获取的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public FsmBase GetFsm(Type ownerType)
         {
             return m_FsmManager.GetFsm(ownerType);
@@ -157,7 +156,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>要获取的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> GetFsm<T>(string name) where T : class
         {
             return m_FsmManager.GetFsm<T>(name);
@@ -169,7 +168,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>要获取的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public FsmBase GetFsm(Type ownerType, string name)
         {
             return m_FsmManager.GetFsm(ownerType, name);
@@ -178,7 +177,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取所有有限状态机。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public FsmBase[] GetAllFsmList()
         {
             return m_FsmManager.GetAllFsms();
@@ -188,7 +187,7 @@ namespace GameFrameX.Fsm.Runtime
         /// 获取所有有限状态机。
         /// </summary>
         /// <param name="results">所有有限状态机。</param>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public void GetAllFsmList(List<FsmBase> results)
         {
             m_FsmManager.GetAllFsms(results);
@@ -201,7 +200,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>要创建的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> CreateFsm<T>(T owner, params FsmState<T>[] states) where T : class
         {
             return m_FsmManager.CreateFsm(owner, states);
@@ -215,7 +214,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>要创建的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> CreateFsm<T>(string name, T owner, params FsmState<T>[] states) where T : class
         {
             return m_FsmManager.CreateFsm(name, owner, states);
@@ -228,7 +227,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>要创建的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> CreateFsm<T>(T owner, List<FsmState<T>> states) where T : class
         {
             return m_FsmManager.CreateFsm(owner, states);
@@ -242,7 +241,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="owner">有限状态机持有者。</param>
         /// <param name="states">有限状态机状态集合。</param>
         /// <returns>要创建的有限状态机。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public IFsm<T> CreateFsm<T>(string name, T owner, List<FsmState<T>> states) where T : class
         {
             return m_FsmManager.CreateFsm(name, owner, states);
@@ -253,7 +252,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm<T>() where T : class
         {
             return m_FsmManager.DestroyFsm<T>();
@@ -264,7 +263,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm(Type ownerType)
         {
             return m_FsmManager.DestroyFsm(ownerType);
@@ -276,7 +275,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">要销毁的有限状态机名称。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm<T>(string name) where T : class
         {
             return m_FsmManager.DestroyFsm<T>(name);
@@ -288,7 +287,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <param name="name">要销毁的有限状态机名称。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm(Type ownerType, string name)
         {
             return m_FsmManager.DestroyFsm(ownerType, name);
@@ -300,7 +299,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="fsm">要销毁的有限状态机。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm<T>(IFsm<T> fsm) where T : class
         {
             return m_FsmManager.DestroyFsm(fsm);
@@ -311,7 +310,7 @@ namespace GameFrameX.Fsm.Runtime
         /// </summary>
         /// <param name="fsm">要销毁的有限状态机。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public bool DestroyFsm(FsmBase fsm)
         {
             return m_FsmManager.DestroyFsm(fsm);

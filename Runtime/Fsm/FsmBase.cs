@@ -29,14 +29,13 @@
 
 using System;
 using GameFrameX.Runtime;
-using UnityEngine.Scripting;
 
 namespace GameFrameX.Fsm.Runtime
 {
     /// <summary>
     /// 有限状态机基类。
     /// </summary>
-    [Preserve]
+    [UnityEngine.Scripting.Preserve]
     public abstract class FsmBase
     {
         private string m_Name;
@@ -44,7 +43,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 初始化有限状态机基类的新实例。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public FsmBase()
         {
             m_Name = string.Empty;
@@ -53,7 +52,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机名称。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public string Name
         {
             get { return m_Name; }
@@ -63,7 +62,7 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机完整名称。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public string FullName
         {
             get { return new TypeNamePair(OwnerType, m_Name).ToString(); }
@@ -72,37 +71,37 @@ namespace GameFrameX.Fsm.Runtime
         /// <summary>
         /// 获取有限状态机持有者类型。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract Type OwnerType { get; }
 
         /// <summary>
         /// 获取有限状态机中状态的数量。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract int FsmStateCount { get; }
 
         /// <summary>
         /// 获取有限状态机是否正在运行。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract bool IsRunning { get; }
 
         /// <summary>
         /// 获取有限状态机是否被销毁。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract bool IsDestroyed { get; }
 
         /// <summary>
         /// 获取当前有限状态机状态名称。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract string CurrentStateName { get; }
 
         /// <summary>
         /// 获取当前有限状态机状态持续时间。
         /// </summary>
-        [Preserve]
+        [UnityEngine.Scripting.Preserve]
         public abstract float CurrentStateTime { get; }
 
         /// <summary>
