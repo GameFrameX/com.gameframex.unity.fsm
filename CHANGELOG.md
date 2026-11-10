@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/gameframex/com.gameframex.unity.fsm/compare/2.0.0...2.0.1) (2026-11-10)
+
+
+### Bug Fixes
+
+* **fsm:** 添加完整 link.xml 防代码裁剪保护 ([d81fd10](https://github.com/gameframex/com.gameframex.unity.fsm/commit/d81fd10f59cdcb56cf6057c8ae4d4c38a7163587))
+
 # [2.0.0](https://github.com/gameframex/com.gameframex.unity.fsm/compare/1.2.0...2.0.0) (2026-10-15)
 
 
